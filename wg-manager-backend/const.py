@@ -14,10 +14,6 @@ assert OBFUSCATE_MODE in OBFUSCATE_SUPPORTED, "Invalid OBFUSCATE_MODE=%s, Valid 
                                                                                                     OBFUSCATE_SUPPORTED)
 
 os.makedirs("build", exist_ok=True)
-DEFAULT_POST_UP = os.getenv("POST_UP", "iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;")
-DEFAULT_POST_DOWN = os.getenv("POST_DOWN", "iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE;")
-DEFAULT_POST_UP_v6 = os.getenv("POST_UP_V6", "ip6tables -A FORWARD -i %i -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;")
-DEFAULT_POST_DOWN_v6 = os.getenv("POST_DOWN_V6", "ip6tables -D FORWARD -i %i -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE;")
 
 SECRET_KEY = ''.join(random.choices(string.ascii_uppercase + string.digits, k=64))
 ALGORITHM = "HS256"
@@ -76,6 +72,26 @@ else:
 
 ENV_CONFIG_DIR = os.getenv("ENV_CONFIG_DIR", DEFAULT_CONFIG_DIR)
 os.makedirs(ENV_CONFIG_DIR, exist_ok=True)
+
+
+def _get_interface():
+    interfaces = os.listdir("/sys/class/net/")
+    ethernet_interfaces = [_interface.lower() for _interface in interfaces if _interface.lower().startswith("en")]
+    wlan_interfaces     = [_interface.lower() for _interface in interfaces if _interface.lower().startswith("wl")]
+
+    if ethernet_interfaces:
+        return ethernet_interfaces[0]
+    elif wlan_interfaces:
+        return wlan_interfaces[0]
+    else:
+        return "eth0"
+
+
+_interface = _get_interface()
+DEFAULT_POST_UP = os.getenv("POST_UP", f" iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o {_interface} -j MASQUERADE;")
+DEFAULT_POST_DOWN = os.getenv("POST_DOWN", f"iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o {_interface} -j MASQUERADE;")
+DEFAULT_POST_UP_v6 = os.getenv("POST_UP_V6", f"ip6tables -A FORWARD -i %i -j ACCEPT; ip6tables -t nat -A POSTROUTING -o {_interface} -j MASQUERADE;")
+DEFAULT_POST_DOWN_v6 = os.getenv("POST_DOWN_V6", f"ip6tables -D FORWARD -i %i -j ACCEPT; ip6tables -t nat -D POSTROUTING -o {_interface} -j MASQUERADE;")
 
 
 def _server_dir(interface):

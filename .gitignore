@@ -14,7 +14,7 @@ venv
 **__pycache__
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -37,6 +37,7 @@ venv
 npm-debug.log
 testem.log
 /typings
+wg-manager-frontend/package-lock.json
 
 # e2e
 /e2e/*.js

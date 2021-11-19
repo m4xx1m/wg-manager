@@ -159,7 +159,7 @@ class WGServer(GenericModel):
     address: str = None
     v6_address: str = None
     subnet: int = None
-    v6_subnet: int = None
+    v6_subnet: int = 64
     interface: str
     listen_port: int = None
     endpoint: str = None

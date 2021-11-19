@@ -209,10 +209,10 @@ def move_server_dir(interface, interface1):
 def generate_config(obj: typing.Union[typing.Dict[schemas.WGPeer, schemas.WGServer], schemas.WGServer]):
     if isinstance(obj, dict) and "server" in obj and "peer" in obj:
         template = "peer.j2"
-        is_ipv6 = obj["server"].v6_address is not None
+        is_ipv6 = bool(obj["server"].v6_address)
     elif isinstance(obj, schemas.WGServer) or isinstance(obj, models.WGServer):
         template = "server.j2"
-        is_ipv6 = obj.v6_address is not None
+        is_ipv6 = bool(obj.v6_address)
     else:
         raise ValueError("Incorrect input type. Should be WGPeer or WGServer")
 

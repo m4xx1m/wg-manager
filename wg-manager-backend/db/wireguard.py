@@ -168,13 +168,13 @@ def server_add(server: schemas.WGServerAdd, sess: Session, start=False):
     # Configure POST UP with defaults if not manually set.
     if server.post_up == "":
         server.post_up = const.DEFAULT_POST_UP
-        if server.v6_address is not None:
+        if server.v6_address:
             server.post_up += const.DEFAULT_POST_UP_v6
 
     # Configure POST DOWN with defaults if not manually set.
     if server.post_down == "":
         server.post_down = const.DEFAULT_POST_DOWN
-        if server.v6_address is not None:
+        if server.v6_address:
             server.post_down += const.DEFAULT_POST_DOWN_v6
 
     peers = server.peers if server.peers else []
