@@ -26,7 +26,7 @@ export class ServerComponent implements OnInit {
   }
 
   edit() {
-
+    // TODO: do automatic opening panel (I can't)
     this.comm.emit('server-edit', this.server);
   }
 
