@@ -1,4 +1,5 @@
 import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IPValidator } from '../../../validators/ip-address.validator';
 import { NumberValidator } from '../../../validators/number.validator';
@@ -20,6 +21,7 @@ import {Address4, Address6} from 'ip-address'
 export class AddServerComponent implements OnInit {
 
   @Input() servers: Server[];
+  @ViewChild("addServerMatPanel") addServerMatPanel: MatExpansionPanel;
 
   // Translates from wg configuration keywords to form and backend keywords
   wgConfTranslation = {
@@ -45,7 +47,7 @@ export class AddServerComponent implements OnInit {
   defaultIPv4Subnet = 24;
   defaultIPv6Subnet = 64;
   defaultIPv4Address = "10.0.200.1"
-  defaultDNS = this.defaultIPv4Address + ",8.8.8.8"
+  defaultDNS = this.defaultIPv4Address + ", 8.8.8.8"
   defaultIPv6Address = "fd42:42:42::1"
   defaultAllowedIPs = "0.0.0.0/0, ::/0"
   defaultPersistentKeepalive = 0;
@@ -259,6 +261,7 @@ export class AddServerComponent implements OnInit {
       const idx = this.servers.indexOf(this.editServer);
       this.serverAPI.editServer(this.editServer, form).subscribe((server: Server) => {
         this.servers[idx] = server;
+        this.addServerMatPanel.close();
         this.resetForm();
       });
 
@@ -266,6 +269,7 @@ export class AddServerComponent implements OnInit {
 
       this.serverAPI.addServer(form).subscribe((server: Server) => {
         this.servers.push(server);
+        this.addServerMatPanel.close();
         this.resetForm();
       });
     }
