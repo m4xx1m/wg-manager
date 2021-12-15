@@ -19,18 +19,27 @@
         </td>
         <td>
           <mat-form-field class="full-width">
-            <mat-label>Address</mat-label>
-            <input [disabled]="!peer._edit" name="address" matInput [(ngModel)]="peer.address">
+            <mat-label>DNS</mat-label>
+            <input [disabled]="!peer._edit" name="dns" [(ngModel)]="peer.dns" matInput>
+          </mat-form-field>
+        </td></tr>
+      </table>
+
+      <table class="full-width" cellspacing="0"><tr>
+        <td>
+          <mat-form-field class="full-width">
+            <mat-label>IPv4 Address</mat-label>
+            <input [disabled]="!peer._edit" name="v4address" matInput [(ngModel)]="peer.address">
           </mat-form-field>
         </td>
-      </tr></table>
+        <td>
+          <mat-form-field class="full-width">
+            <mat-label>IPv6 Address</mat-label>
+            <input [disabled]="!peer._edit" name="v6address" matInput [(ngModel)]="peer.v6_address">
+          </mat-form-field>
+        </td>
 
-      <p>
-        <mat-form-field class="full-width">
-          <mat-label>DNS</mat-label>
-          <input [disabled]="!peer._edit" name="dns" [(ngModel)]="peer.dns" matInput>
-        </mat-form-field>
-      </p>
+      </tr></table>
 
 
       <p>
