@@ -17,7 +17,7 @@ def setup_on_start():
     for s in servers:
         try:
             last_state = s.is_running
-            if is_installed() and last_state and is_running(s):
+            if is_installed() and last_state and not is_running(s):
                 start_interface(s)
         except Exception as e:
             print(e)
